@@ -4,171 +4,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎙️ AI Voiceover Script Generator</title>
+    <title>AI Saving Maker - Smart Financial Planning</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --danger-gradient: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+        }
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .main-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+        .hero-section {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 3rem 0;
+            border-radius: 0 0 50px 50px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card {
+            border: none;
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            margin: 2rem auto;
-            padding: 2rem;
-            max-width: 900px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
 
-        .header h1 {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-section {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border: 2px solid #e9ecef;
+        .input-card {
+            background: white;
+            backdrop-filter: blur(10px);
         }
 
         .form-control {
-            border-radius: 10px;
+            border-radius: 15px;
             border: 2px solid #e9ecef;
-            padding: 12px 15px;
-            font-size: 1rem;
+            padding: 12px 20px;
             transition: all 0.3s ease;
         }
 
         .form-control:focus {
             border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.1);
         }
 
-        .btn-generate {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+        .btn-ai {
+            background: var(--primary-gradient);
             border: none;
             border-radius: 25px;
             padding: 12px 30px;
-            font-size: 1.1rem;
+            color: white;
             font-weight: 600;
-            color: white;
             transition: all 0.3s ease;
-            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .btn-generate:hover {
+        .btn-ai:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
             color: white;
         }
 
-        .btn-generate:disabled {
-            opacity: 0.6;
-            transform: none;
-            box-shadow: none;
+        .advice-card {
+            border-left: 5px solid;
+            transition: all 0.3s ease;
         }
 
-        .script-output {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 15px;
+        .advice-card.success {
+            border-left-color: #28a745;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        }
+
+        .advice-card.warning {
+            border-left-color: #ffc107;
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+        }
+
+        .advice-card.danger {
+            border-left-color: #dc3545;
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .stat-card {
+            text-align: center;
             padding: 1.5rem;
-            margin-top: 2rem;
-            border-left: 5px solid #667eea;
+            border-radius: 15px;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card.income {
+            background: var(--success-gradient);
+        }
+
+        .stat-card.expenses {
+            background: var(--warning-gradient);
+        }
+
+        .stat-card.savings {
+            background: var(--primary-gradient);
+        }
+
+        .loading-spinner {
             display: none;
         }
 
-        .script-text {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #333;
-            margin-bottom: 1rem;
-            max-height: 400px;
-            overflow-y: auto;
-            background: white;
-            padding: 1rem;
-            border-radius: 10px;
-            border: 1px solid #e9ecef;
+        .ai-suggestion {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
         }
 
-        .speaker-emoji {
-            font-size: 1.5rem;
-            margin-right: 0.5rem;
+        .pulse-animation {
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.1);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        .copy-btn {
-            background: #28a745;
-            border: none;
-            border-radius: 20px;
-            color: white;
-            padding: 8px 20px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .copy-btn:hover {
-            background: #218838;
-            transform: translateY(-1px);
-            color: white;
-        }
-
-        .copy-success {
-            background: #17a2b8 !important;
-        }
-
-        .listen-btn {
-            background: #007bff;
-            border: none;
-            border-radius: 20px;
-            color: white;
-            padding: 8px 20px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            margin-left: 10px;
-        }
-
-        .listen-btn:hover {
-            background: #0056b3;
-            transform: translateY(-1px);
-            color: white;
-        }
-
-        .listen-btn.playing {
-            background: #dc3545;
-            animation: pulse-button 1.5s infinite;
-        }
-
-        @keyframes pulse-button {
             0% {
                 transform: scale(1);
             }
@@ -182,753 +157,780 @@
             }
         }
 
-        .audience-cards {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .audience-card {
-            flex: 1;
-            background: white;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            padding: 1rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .audience-card:hover,
-        .audience-card.selected {
-            border-color: #667eea;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .floating-icon {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--primary-gradient);
             color: white;
-            transform: translateY(-2px);
-        }
-
-        .audience-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .script-meta {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            color: #666;
-            flex-wrap: wrap;
-            gap: 1rem;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .word-count {
-            background: #667eea;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-        }
-
-        .duration-slider {
-            margin-bottom: 1rem;
-        }
-
-        .duration-display {
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #667eea;
-            margin-bottom: 1rem;
-        }
-
-        .progress-bar {
-            height: 6px;
-            background: #e9ecef;
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 1rem;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .section-divider {
-            border-bottom: 1px solid #e9ecef;
-            margin: 1rem 0;
-            padding-bottom: 0.5rem;
-            font-weight: 600;
-            color: #667eea;
-        }
-
-        .loading {
+        .results-section {
             display: none;
         }
 
-        .download-btn {
-            background: #6f42c1;
-            border: none;
-            border-radius: 20px;
-            color: white;
-            padding: 8px 20px;
+        .currency-display {
             font-size: 0.9rem;
-            transition: all 0.3s ease;
-            margin-left: 10px;
-        }
-
-        .download-btn:hover {
-            background: #5a2a9a;
-            transform: translateY(-1px);
-            color: white;
-        }
-
-        .duration-accuracy {
-            background: #28a745;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            margin-left: 10px;
-        }
-
-        .generation-info {
-            background: #17a2b8;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
-            text-align: center;
+            color: #667eea;
+            font-weight: bold;
         }
 
         @media (max-width: 768px) {
-            .audience-cards {
-                flex-direction: column;
+            .hero-section {
+                padding: 2rem 0;
             }
 
-            .main-container {
-                margin: 1rem;
-                padding: 1.5rem;
-            }
-
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .btn-group {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .listen-btn,
-            .download-btn {
-                margin-left: 0;
-                margin-top: 10px;
-            }
-
-            .script-meta {
-                flex-direction: column;
-                align-items: flex-start;
+            .chart-container {
+                height: 300px;
             }
         }
     </style>
 </head>
 
 <body>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-3">
+                        <i class="fas fa-robot me-3"></i>AI Saving Maker
+                    </h1>
+                    <p class="lead mb-0">Financial freedom starts with smart AI for smart minds</p>
+                </div>
+                <div class="col-lg-4 text-end">
+                    <i class="fas fa-chart-pie fa-5x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
-        <div class="main-container">
-            <div class="header">
-                <h1>🎙️ AI Voiceover Script Generator</h1>
-                <p class="text-muted">Create unique, precisely-timed scripts from 30 seconds to 7 minutes</p>
+        <!-- Input Section -->
+        <div class="row mb-4">
+            <div class="col-lg-8 mx-auto">
+                <div class="card input-card position-relative">
+                    <div class="floating-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <div class="card-body p-4">
+                        <h3 class="card-title text-center mb-4">
+                            <i class="fas fa-wallet me-2 text-primary"></i>
+                            Enter Your Financial Details
+                        </h3>
+
+                        <form id="budgetForm">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fas fa-globe text-info me-2"></i>
+                                        Select Your Currency
+                                    </label>
+                                    <select class="form-control" id="currency" required>
+                                        <option value="">Choose your country's currency...</option>
+                                        <option value="USD" data-symbol="$" data-country="United States"
+                                            data-flag="🇺🇸"> USD - US Dollar ($)</option>
+                                        <option value="EUR" data-symbol="€" data-country="European Union"
+                                            data-flag="🇪🇺"> EUR - Euro (€)</option>
+                                        <option value="GBP" data-symbol="£" data-country="United Kingdom"
+                                            data-flag="🇬🇧"> GBP - British Pound (£)</option>
+                                        <option value="JPY" data-symbol="¥" data-country="Japan" data-flag="🇯🇵">
+                                            JPY - Japanese Yen (¥)</option>
+                                        <option value="AUD" data-symbol="A$" data-country="Australia" data-flag="🇦🇺">
+                                            AUD - Australian Dollar (A$)</option>
+                                        <option value="CAD" data-symbol="C$" data-country="Canada" data-flag="🇨🇦">
+                                            CAD - Canadian Dollar (C$)</option>
+                                        <option value="CHF" data-symbol="CHF" data-country="Switzerland"
+                                            data-flag="🇨🇭"> CHF - Swiss Franc (CHF)</option>
+                                        <option value="CNY" data-symbol="¥" data-country="China" data-flag="🇨🇳">
+                                            CNY - Chinese Yuan (¥)</option>
+                                        <option value="INR" data-symbol="₹" data-country="India" data-flag="🇮🇳">
+                                            INR - Indian Rupee (₹)</option>
+                                        <option value="KRW" data-symbol="₩" data-country="South Korea" data-flag="🇰🇷">
+                                            KRW - South Korean Won (₩)</option>
+                                        <option value="SGD" data-symbol="S$" data-country="Singapore" data-flag="🇸🇬">
+                                            SGD - Singapore Dollar (S$)</option>
+                                        <option value="HKD" data-symbol="HK$" data-country="Hong Kong" data-flag="🇭🇰">
+                                            HKD - Hong Kong Dollar (HK$)</option>
+                                        <option value="NOK" data-symbol="kr" data-country="Norway" data-flag="🇳🇴">
+                                            NOK - Norwegian Krone (kr)</option>
+                                        <option value="SEK" data-symbol="kr" data-country="Sweden" data-flag="🇸🇪">
+                                            SEK - Swedish Krona (kr)</option>
+                                        <option value="DKK" data-symbol="kr" data-country="Denmark" data-flag="🇩🇰">
+                                            DKK - Danish Krone (kr)</option>
+                                        <option value="PLN" data-symbol="zł" data-country="Poland" data-flag="🇵🇱">
+                                            PLN - Polish Zloty (zł)</option>
+                                        <option value="CZK" data-symbol="Kč" data-country="Czech Republic"
+                                            data-flag="🇨🇿"> CZK - Czech Koruna (Kč)</option>
+                                        <option value="HUF" data-symbol="Ft" data-country="Hungary" data-flag="🇭🇺">
+                                            HUF - Hungarian Forint (Ft)</option>
+                                        <option value="RUB" data-symbol="₽" data-country="Russia" data-flag="🇷🇺">
+                                            RUB - Russian Ruble (₽)</option>
+                                        <option value="BRL" data-symbol="R$" data-country="Brazil" data-flag="🇧🇷">
+                                            BRL - Brazilian Real (R$)</option>
+                                        <option value="MXN" data-symbol="$" data-country="Mexico" data-flag="🇲🇽">
+                                            MXN - Mexican Peso ($)</option>
+                                        <option value="ARS" data-symbol="$" data-country="Argentina" data-flag="🇦🇷">
+                                            ARS - Argentine Peso ($)</option>
+                                        <option value="CLP" data-symbol="$" data-country="Chile" data-flag="🇨🇱">
+                                            CLP - Chilean Peso ($)</option>
+                                        <option value="COP" data-symbol="$" data-country="Colombia" data-flag="🇨🇴">
+                                            COP - Colombian Peso ($)</option>
+                                        <option value="PEN" data-symbol="S/" data-country="Peru" data-flag="🇵🇪">
+                                            PEN - Peruvian Sol (S/)</option>
+                                        <option value="ZAR" data-symbol="R" data-country="South Africa"
+                                            data-flag="🇿🇦"> ZAR - South African Rand (R)</option>
+                                        <option value="EGP" data-symbol="£" data-country="Egypt" data-flag="🇪🇬">
+                                            EGP - Egyptian Pound (£)</option>
+                                        <option value="NGN" data-symbol="₦" data-country="Nigeria" data-flag="🇳🇬">
+                                            NGN - Nigerian Naira (₦)</option>
+                                        <option value="KES" data-symbol="KSh" data-country="Kenya" data-flag="🇰🇪">
+                                            KES - Kenyan Shilling (KSh)</option>
+                                        <option value="MAD" data-symbol="DH" data-country="Morocco" data-flag="🇲🇦">
+                                            MAD - Moroccan Dirham (DH)</option>
+                                        <option value="PKR" data-symbol="₨" data-country="Pakistan" data-flag="🇵🇰">
+                                            PKR - Pakistani Rupee (₨)</option>
+                                        <option value="BDT" data-symbol="৳" data-country="Bangladesh" data-flag="🇧🇩">
+                                            BDT - Bangladeshi Taka (৳)</option>
+                                        <option value="LKR" data-symbol="Rs" data-country="Sri Lanka" data-flag="🇱🇰">
+                                            LKR - Sri Lankan Rupee (Rs)</option>
+                                        <option value="NPR" data-symbol="Rs" data-country="Nepal" data-flag="🇳🇵">
+                                            NPR - Nepalese Rupee (Rs)</option>
+                                        <option value="THB" data-symbol="฿" data-country="Thailand" data-flag="🇹🇭">
+                                            THB - Thai Baht (฿)</option>
+                                        <option value="VND" data-symbol="₫" data-country="Vietnam" data-flag="🇻🇳">
+                                            VND - Vietnamese Dong (₫)</option>
+                                        <option value="IDR" data-symbol="Rp" data-country="Indonesia" data-flag="🇮🇩">
+                                            IDR - Indonesian Rupiah (Rp)</option>
+                                        <option value="MYR" data-symbol="RM" data-country="Malaysia" data-flag="🇲🇾">
+                                            MYR - Malaysian Ringgit (RM)</option>
+                                        <option value="PHP" data-symbol="₱" data-country="Philippines" data-flag="🇵🇭">
+                                            PHP - Philippine Peso (₱)</option>
+                                        <option value="TWD" data-symbol="NT$" data-country="Taiwan" data-flag="🇹🇼">
+                                            TWD - Taiwan Dollar (NT$)</option>
+                                        <option value="NZD" data-symbol="NZ$" data-country="New Zealand"
+                                            data-flag="🇳🇿"> NZD - New Zealand Dollar (NZ$)</option>
+                                        <option value="TRY" data-symbol="₺" data-country="Turkey" data-flag="🇹🇷">
+                                            TRY - Turkish Lira (₺)</option>
+                                        <option value="ILS" data-symbol="₪" data-country="Israel" data-flag="🇮🇱">
+                                            ILS - Israeli Shekel (₪)</option>
+                                        <option value="AED" data-symbol="د.إ" data-country="UAE" data-flag="🇦🇪">
+                                            AED - UAE Dirham (د.إ)</option>
+                                        <option value="SAR" data-symbol="ر.س" data-country="Saudi Arabia"
+                                            data-flag="🇸🇦"> SAR - Saudi Riyal (ر.س)</option>
+                                        <option value="QAR" data-symbol="ر.ق" data-country="Qatar" data-flag="🇶🇦">
+                                            QAR - Qatari Riyal (ر.ق)</option>
+                                        <option value="KWD" data-symbol="د.ك" data-country="Kuwait" data-flag="🇰🇼">
+                                            KWD - Kuwaiti Dinar (د.ك)</option>
+                                        <option value="BHD" data-symbol="د.ب" data-country="Bahrain" data-flag="🇧🇭">
+                                            BHD - Bahraini Dinar (د.ب)</option>
+                                        <option value="OMR" data-symbol="ر.ع." data-country="Oman" data-flag="🇴🇲">
+                                            OMR - Omani Rial (ر.ع.)</option>
+                                        <option value="JOD" data-symbol="د.ا" data-country="Jordan" data-flag="🇯🇴">
+                                            JOD - Jordanian Dinar (د.ا)</option>
+                                        <option value="LBP" data-symbol="ل.ل" data-country="Lebanon" data-flag="🇱🇧">
+                                            LBP - Lebanese Pound (ل.ل)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fas fa-money-bill-wave text-success me-2"></i>
+                                        Monthly Income (<span id="incomeSymbol" class="currency-display">$</span>)
+                                    </label>
+                                    <input type="number" class="form-control" id="income" placeholder="e.g., 3000"
+                                        required min="0" step="0.01">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fas fa-home text-primary me-2"></i>
+                                        Rent/Housing (<span id="rentSymbol" class="currency-display">$</span>)
+                                    </label>
+                                    <input type="number" class="form-control" id="rent" placeholder="e.g., 1200"
+                                        required min="0" step="0.01">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fas fa-utensils text-warning me-2"></i>
+                                        Food & Groceries (<span id="foodSymbol" class="currency-display">$</span>)
+                                    </label>
+                                    <input type="number" class="form-control" id="food" placeholder="e.g., 400" required
+                                        min="0" step="0.01">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fas fa-gamepad text-info me-2"></i>
+                                        Entertainment (<span id="entertainmentSymbol" class="currency-display">$</span>)
+                                    </label>
+                                    <input type="number" class="form-control" id="entertainment" placeholder="e.g., 200"
+                                        required min="0" step="0.01">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fas fa-graduation-cap text-danger me-2"></i>
+                                        Education (<span id="educationSymbol" class="currency-display">$</span>)
+                                    </label>
+                                    <input type="number" class="form-control" id="education" placeholder="e.g., 300"
+                                        required min="0" step="0.01">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fas fa-plus-circle text-secondary me-2"></i>
+                                        Other Expenses (<span id="otherSymbol" class="currency-display">$</span>)
+                                    </label>
+                                    <input type="number" class="form-control" id="other" placeholder="e.g., 150"
+                                        required min="0" step="0.01">
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-ai btn-lg">
+                                    <span class="loading-spinner spinner-border spinner-border-sm me-2"></span>
+                                    <i class="fas fa-magic me-2"></i>
+                                    Generate AI Saving Plan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection">
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="stat-card income">
+                        <i class="fas fa-arrow-up fa-2x mb-2"></i>
+                        <h4 id="totalIncome">$0</h4>
+                        <p class="mb-0">Monthly Income</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card expenses">
+                        <i class="fas fa-arrow-down fa-2x mb-2"></i>
+                        <h4 id="totalExpenses">$0</h4>
+                        <p class="mb-0">Total Expenses</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card savings">
+                        <i class="fas fa-piggy-bank fa-2x mb-2"></i>
+                        <h4 id="totalSavings">$0</h4>
+                        <p class="mb-0">Available Savings</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="form-section">
-                <div class="mb-3">
-                    <label for="topic" class="form-label fw-semibold">
-                        <i class="fas fa-lightbulb text-warning"></i> Topic
-                    </label>
-                    <input type="text" class="form-control" id="topic"
-                        placeholder="e.g., Climate Change, Digital Marketing, Space Exploration..." required>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">
-                        <i class="fas fa-users text-info"></i> Target Audience
-                    </label>
-                    <div class="audience-cards">
-                        <div class="audience-card" onclick="selectAudience('kids', this)">
-                            <span class="audience-icon">👶</span>
-                            <strong>Kids</strong>
-                            <small class="d-block">Ages 5-12</small>
-                        </div>
-                        <div class="audience-card" onclick="selectAudience('students', this)">
-                            <span class="audience-icon">🎓</span>
-                            <strong>Students</strong>
-                            <small class="d-block">Ages 13-25</small>
-                        </div>
-                        <div class="audience-card" onclick="selectAudience('business', this)">
-                            <span class="audience-icon">💼</span>
-                            <strong>Business</strong>
-                            <small class="d-block">Professionals</small>
-                        </div>
+            <!-- AI Suggestions -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="ai-suggestion" id="aiSuggestion">
+                        <h4><i class="fas fa-robot me-2"></i>AI Budget Analysis</h4>
+                        <p id="budgetAnalysis" class="mb-0"></p>
                     </div>
                 </div>
-
-                <div class="mb-3 duration-slider">
-                    <label class="form-label fw-semibold">
-                        <i class="fas fa-clock text-success"></i> Script Duration
-                    </label>
-                    <div class="duration-display" id="durationDisplay">1 minute</div>
-                    <input type="range" class="form-range" id="durationSlider" min="0.5" max="7" step="0.5" value="1"
-                        oninput="updateDuration(this.value)">
-                    <div class="d-flex justify-content-between text-muted small">
-                        <span>30 sec</span>
-                        <span>7 min</span>
-                    </div>
-                </div>
-
-                <button type="button" class="btn btn-generate" onclick="generateScript()">
-                    <span id="btnText">
-                        <i class="fas fa-magic"></i> Generate Script
-                    </span>
-                    <span id="loading" class="loading">
-                        <i class="fas fa-spinner fa-spin"></i> Generating...
-                    </span>
-                </button>
             </div>
 
-            <div class="script-output" id="scriptOutput">
-                <div class="generation-info" id="generationInfo">
-                    <i class="fas fa-sparkles"></i> Generated fresh content with precision timing
-                </div>
-
-                <div class="script-meta">
-                    <div>
-                        <i class="fas fa-clock text-primary"></i>
-                        <span class="duration" id="estimatedDuration">~1 minute</span>
-                        <span class="duration-accuracy" id="accuracyBadge">Perfect Match!</span>
+            <!-- Chart and Advice -->
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center mb-3">
+                                <i class="fas fa-chart-pie me-2 text-primary"></i>
+                                Budget Breakdown
+                            </h5>
+                            <div class="chart-container">
+                                <canvas id="budgetChart"></canvas>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <span class="word-count" id="wordCount">0 words</span>
-                        <span class="word-count ms-2" id="charCount">0 characters</span>
-                    </div>
                 </div>
 
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-
-                <div class="script-text" id="scriptText">
-                    <span class="speaker-emoji">🎙️</span>
-                    <span id="generatedScript"></span>
-                </div>
-
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <div class="btn-group">
-                        <button class="btn copy-btn" onclick="copyToClipboard()">
-                            <i class="fas fa-copy"></i> Copy Script
-                        </button>
-                        <button class="btn listen-btn" onclick="toggleSpeech()" id="listenBtn">
-                            <i class="fas fa-play"></i> Listen
-                        </button>
-                        <button class="btn download-btn" onclick="downloadScript()">
-                            <i class="fas fa-download"></i> Download
-                        </button>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">
+                                <i class="fas fa-lightbulb me-2 text-warning"></i>
+                                AI Saving Tips
+                            </h5>
+                            <div id="savingTips"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <footer class="text-center py-4 mt-5">
+        <div class="container">
+            <p class="text-muted mb-0">
+                <i class="fas fa-heart text-danger me-1"></i>
+                AI Saving Maker - Smart Financial Planning
+            </p>
+        </div>
+    </footer>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        let selectedAudience = '';
-        let selectedDuration = 1;
-        let speechSynthesis = window.speechSynthesis;
-        let currentUtterance = null;
-        let isPlaying = false;
+        let budgetChart = null;
+        let selectedCurrency = 'USD';
+        let currencySymbol = '$';
+        let currencyFlag = '🇺🇸';
+        let countryName = 'United States';
 
-        // Enhanced script generation with massive content pools for uniqueness
-        const contentDatabase = {
-            kids: {
-                openings: [
-                    "Hey there, amazing young explorers! 🌟 Are you ready to discover something absolutely incredible about",
-                    "Wow! Buckle up, superstar scientists, because we're about to dive into the fascinating world of",
-                    "Listen up, curious minds! I've got something super exciting to share with you about",
-                    "Amazing discovery alert! 🚨 Young adventurers, prepare to be amazed by the wonderful secrets of",
-                    "Hello, brilliant future inventors! Get ready for an awesome journey into the magical realm of",
-                    "Attention all young scientists! Put on your thinking caps because we're exploring the incredible mysteries of",
-                    "Hey fantastic kids! Did you know there's something absolutely mind-blowing happening right now with",
-                    "Welcome, young explorers! Today we're going on an amazing adventure to learn about the spectacular world of"
-                ],
-                connectors: [
-                    "It's like having magical superpowers that help us understand how",
-                    "Imagine if you could see invisible forces working together to create amazing things through",
-                    "Picture this as nature's incredible way of showing us the fantastic secrets behind",
-                    "Think of it as the universe's special recipe for making extraordinary things happen with",
-                    "It's similar to a giant puzzle where every piece fits perfectly to reveal the wonders of",
-                    "Just like your favorite superhero has special abilities, this incredible phenomenon uses its power to",
-                    "Imagine having x-ray vision that lets you see the amazing hidden world of",
-                    "It's like being a detective who gets to solve the coolest mysteries about"
-                ],
-                explanations: [
-                    "Scientists who study this amazing topic have discovered that it works in the most incredible ways! Every single day, researchers around the world are uncovering new secrets that help us understand how",
-                    "The coolest part about this fascinating subject is how it connects to so many things we see every day. When we look really closely with special tools and equipment, we can observe how",
-                    "What makes this topic absolutely mind-blowing is that it's been happening for millions and millions of years, even before dinosaurs walked the Earth! Throughout all this time, it has been",
-                    "Here's where it gets really exciting - this incredible phenomenon doesn't just happen in one place. It occurs all around us, from the tiniest atoms to the biggest galaxies, constantly",
-                    "The most amazing thing about this subject is how it helps solve real problems and makes our world better. Smart scientists and engineers use their knowledge of this to create inventions that",
-                    "But wait, there's even more to discover! This fascinating topic is like a never-ending treasure chest of knowledge. Every time scientists think they understand it completely, they find new layers that reveal how"
-                ],
-                examples: [
-                    "Let me give you a super cool example that will blow your mind! Imagine if you could watch this happening in slow motion - you would see incredible things dancing and moving together to create something that",
-                    "Here's an awesome way to think about it: remember how amazed you feel when you see a rainbow after it rains? Well, this topic creates even more spectacular shows in nature that",
-                    "Think about your favorite magic trick where something appears from nowhere. This amazing phenomenon works just like magic, but it's real science that transforms ordinary things into extraordinary results by",
-                    "Picture the most beautiful fireworks display you've ever seen. Now imagine that this incredible subject creates its own natural fireworks show every single day, lighting up the world with processes that",
-                    "Remember the feeling of wonder when you first learned to ride a bike or swim? This topic gives scientists that same feeling of amazement because it reveals secrets about our universe that"
-                ],
-                developments: [
-                    "The exciting news is that young people just like you are already becoming the next generation of scientists and inventors! Kids around the world are asking brilliant questions and making discoveries that help us learn more about",
-                    "What's really incredible is that this field of study is growing faster than ever before. New technologies are being invented every year that let us see deeper, measure more accurately, and understand better how",
-                    "The future is incredibly bright because smart kids who are curious about science today will grow up to become the researchers who make the next big breakthroughs in understanding",
-                    "Amazing opportunities are opening up all the time for young scientists. Schools and universities are creating special programs where kids can learn hands-on about the fascinating world of",
-                    "The best part is that you don't have to wait until you're grown up to start exploring this topic! There are experiments you can do at home, books you can read, and videos you can watch to discover more about"
-                ],
-                conclusions: [
-                    "So remember, young scientists - every expert was once a beginner just like you! Keep asking questions, stay curious, and never stop exploring. The world needs brilliant minds like yours to solve tomorrow's mysteries! 🌟",
-                    "The most important thing is to keep that spark of curiosity burning bright. Who knows? Maybe one day you'll be the scientist who makes the next incredible discovery that changes our understanding of the world! ✨",
-                    "Keep exploring, keep learning, and keep believing in the power of science! Every question you ask brings us one step closer to understanding the amazing universe we live in. You're already part of the adventure! 🚀",
-                    "Remember that science is everywhere around you, waiting to be discovered. Stay curious, ask lots of questions, and never be afraid to explore new ideas. The future belongs to young scientists like you! 🔬"
-                ]
-            },
-            students: {
-                openings: [
-                    "As we advance in our academic journey, it becomes increasingly important to understand complex concepts that will shape our future careers. Today, we're exploring the cutting-edge field of",
-                    "In an era of rapid technological advancement and global challenges, students like you are uniquely positioned to make a difference by mastering the principles of",
-                    "Contemporary higher education demands that we think critically about interdisciplinary subjects that connect multiple fields of study. One such fascinating area is",
-                    "The 21st century presents unprecedented opportunities for students who can bridge theoretical knowledge with practical applications. This is particularly evident in the evolving field of",
-                    "Modern academic excellence requires understanding how traditional disciplines intersect with emerging technologies and global trends. A prime example of this convergence is found in",
-                    "Today's students are tomorrow's leaders in science, technology, business, and social innovation. Understanding the complexities and opportunities within the field of",
-                    "Critical thinking and analytical skills are essential for navigating our complex world. These abilities are particularly important when studying advanced topics like",
-                    "The integration of technology, research, and real-world problem-solving defines modern education. This integration is beautifully demonstrated in the study of"
-                ],
-                analyses: [
-                    "presents a unique opportunity to develop both technical expertise and strategic thinking abilities that are highly valued in today's competitive job market",
-                    "demonstrates how theoretical frameworks can be applied to solve real-world challenges while advancing our understanding of fundamental principles",
-                    "represents the convergence of multiple disciplines, requiring students to synthesize knowledge from various fields to achieve comprehensive understanding",
-                    "offers pathways to innovation and discovery that could define the next decade of technological and social progress",
-                    "provides essential foundations for careers in research, development, policy-making, and entrepreneurship across numerous industries",
-                    "illustrates how academic knowledge translates into practical solutions for some of the most pressing challenges facing our global society"
-                ],
-                research: [
-                    "Recent research from leading universities and institutions has revealed breakthrough findings that fundamentally change how we approach this subject. Studies published in top-tier journals demonstrate that",
-                    "The academic community has witnessed remarkable developments in this field over the past five years. Peer-reviewed research consistently shows that methodologies in this area",
-                    "Interdisciplinary collaboration between departments has yielded unprecedented insights into the mechanisms and applications of this field. Research teams have discovered that",
-                    "Graduate-level research projects are producing results that have immediate applications in industry and policy. These studies reveal how advanced understanding of this topic",
-                    "International research collaborations are advancing our knowledge at an accelerated pace. Cross-cultural studies and comparative analyses demonstrate that",
-                    "Evidence-based research methodologies are uncovering layers of complexity that were previously unknown. Systematic reviews and meta-analyses confirm that"
-                ],
-                applications: [
-                    "The practical applications of this knowledge extend far beyond academic settings into real-world career opportunities. Professionals working in this field are actively engaged in projects that",
-                    "Industry partnerships with universities are creating internship and research opportunities that give students direct experience with cutting-edge applications. These programs focus on",
-                    "Start-up companies and established corporations are seeking graduates who understand both the theoretical foundations and practical implementations of this field. They're specifically looking for skills in",
-                    "Government agencies and non-profit organizations are increasingly relying on experts in this area to develop policies and programs that address societal challenges through",
-                    "International organizations and global initiatives are creating career paths for professionals who can apply advanced knowledge to solve complex problems involving",
-                    "The consulting industry has identified this field as a high-growth area, with demand increasing for specialists who can guide organizations in implementing solutions based on"
-                ],
-                implications: [
-                    "Understanding these concepts prepares you for graduate school and advanced research opportunities where you'll contribute to expanding human knowledge and developing solutions for future challenges",
-                    "The analytical and problem-solving skills developed through studying this subject are transferable to numerous career paths and provide a foundation for lifelong learning and adaptation",
-                    "Mastery of this field positions you to be part of the next generation of innovators and leaders who will shape policy, drive technological advancement, and address global challenges",
-                    "The interdisciplinary nature of this knowledge creates opportunities for collaboration across fields and prepares you for the increasingly connected nature of modern professional work",
-                    "These concepts form the building blocks for understanding emerging technologies and social trends that will define the next phase of human development and progress"
-                ],
-                conclusions: [
-                    "Your generation has the opportunity to apply this knowledge to create meaningful change in the world. The foundation you're building today will enable you to contribute to solutions for tomorrow's challenges.",
-                    "The skills and understanding you develop in this field will serve you throughout your career, regardless of the specific path you choose. This knowledge is an investment in your intellectual future.",
-                    "As you continue your academic journey, remember that mastering complex concepts like these prepares you for leadership roles in an increasingly sophisticated global society.",
-                    "The intersection of theory and practice in this field exemplifies the kind of learning that produces graduates capable of making significant contributions to their chosen professions and society at large."
-                ]
-            },
-            business: {
-                openings: [
-                    "In today's rapidly evolving business landscape, strategic leaders understand that sustainable competitive advantage comes from organizations that can effectively leverage",
-                    "Market intelligence and comprehensive industry analysis consistently demonstrate that the most successful companies are those that have mastered the art and science of",
-                    "Forward-thinking executives and board members are recognizing that long-term organizational success depends on the strategic implementation of advanced approaches to",
-                    "Global economic trends and emerging market dynamics have created unprecedented opportunities for businesses that can systematically optimize their approach to",
-                    "Enterprise-level decision making in the 21st century requires sophisticated understanding of how operational excellence intersects with strategic innovation in",
-                    "Organizational transformation and sustainable growth are achieved by companies that understand how to align their core competencies with market opportunities through",
-                    "Industry leaders and management consultants agree that the next phase of business evolution will be defined by organizations that can master the complexities of",
-                    "Stakeholder value creation and long-term profitability are increasingly dependent on management teams that can execute strategic initiatives centered around"
-                ],
-                value_props: [
-                    "delivers measurable ROI through systematic optimization of operational processes, customer engagement strategies, and market positioning initiatives that drive sustainable revenue growth",
-                    "creates competitive differentiation by enabling organizations to respond more effectively to market changes while maintaining operational efficiency and customer satisfaction",
-                    "generates sustainable value through the integration of data-driven decision making, process innovation, and strategic resource allocation across all business functions",
-                    "transforms organizational capabilities by aligning human capital development with technological advancement and market opportunity identification",
-                    "establishes market leadership positions through the systematic development of proprietary methodologies and best practices that competitors cannot easily replicate",
-                    "optimizes resource utilization and risk management while simultaneously expanding market share and improving customer lifetime value metrics"
-                ],
-                implementation: [
-                    "The strategic implementation framework requires comprehensive stakeholder analysis, cross-functional team coordination, and systematic change management processes. Leading organizations typically begin by conducting thorough assessments that",
-                    "Best practices in this area emphasize the importance of phased rollouts, pilot program validation, and continuous performance monitoring. Successful implementations invariably include protocols that",
-                    "Executive leadership commitment and board-level oversight are essential components of successful deployment strategies. The most effective approaches integrate governance structures that",
-                    "Organizational readiness assessment and capability building are prerequisite activities that determine implementation success rates. Companies with the highest success rates prioritize initiatives that",
-                    "Resource allocation and timeline management require sophisticated project management methodologies and risk mitigation strategies. Industry benchmarks indicate that organizations achieving optimal results focus on",
-                    "Technology integration and process optimization must be carefully balanced with human capital development and organizational culture transformation. This balance is achieved through systematic approaches that"
-                ],
-                results: [
-                    "Performance metrics from early adopters demonstrate significant improvements in key performance indicators including revenue growth, operational margins, customer retention rates, and market share expansion. These organizations report that",
-                    "ROI calculations and cost-benefit analyses consistently show that organizations implementing these strategies achieve payback periods of 12-18 months with ongoing benefits that compound annually through",
-                    "Competitive analysis reveals that companies utilizing these methodologies outperform industry benchmarks by substantial margins across multiple performance categories. The sustained advantages result from",
-                    "Long-term studies tracking organizational performance over 3-5 year periods indicate that businesses employing these strategies maintain market leadership positions even during economic volatility through",
-                    "Customer satisfaction surveys and brand equity measurements show that organizations implementing these approaches achieve higher loyalty scores and premium pricing capabilities that translate into",
-                    "Financial analysis and stakeholder value assessments demonstrate that these strategies generate sustainable cash flow improvements and enhanced enterprise valuation multiples by"
-                ],
-                competitive: [
-                    "Market dynamics and competitive pressures are creating urgent needs for organizations to adopt these strategies or risk losing market position to more agile competitors who understand how to leverage",
-                    "Industry consolidation and technological disruption are accelerating the pace at which companies must transform their approaches to remain relevant in markets where success increasingly depends on",
-                    "Global economic conditions and supply chain complexities are forcing businesses to develop more sophisticated capabilities in areas that directly relate to their ability to excel at",
-                    "Regulatory changes and stakeholder expectations are establishing new standards for corporate performance that can only be met by organizations that have developed advanced competencies in",
-                    "Digital transformation and data analytics are becoming table stakes for competitive participation, but true differentiation comes from organizations that can integrate these tools with strategic excellence in"
-                ],
-                conclusions: [
-                    "The organizations that will dominate tomorrow's markets are those that take decisive action today to implement these proven strategies. Leadership teams that delay these initiatives risk irreversible competitive disadvantage.",
-                    "Strategic implementation of these principles represents not just an opportunity for improvement, but a necessary evolution for organizations committed to long-term success and stakeholder value creation.",
-                    "The time for incremental change has passed. Market leaders are making bold investments in these capabilities now, and the gap between leaders and followers will only continue to widen.",
-                    "Your organization's future success depends on the strategic decisions you make today regarding these critical capabilities. The question is not whether to act, but how quickly you can implement these transformative approaches."
-                ]
-            }
-        };
+        // Enhanced AI Budget Analyzer with more detailed tips
+        class AIBudgetAnalyzer {
+            constructor() {
+                this.idealRatios = {
+                    housing: 0.30,
+                    food: 0.15,
+                    entertainment: 0.10,
+                    education: 0.08,
+                    other: 0.12,
+                    savings: 0.25
+                };
 
-        // Generate unique seed for randomization each time
-        function generateUniqueSeed() {
-            return Date.now() + Math.random();
-        }
-
-        // Seeded random number generator for reproducible yet unique content
-        function seededRandom(seed) {
-            const x = Math.sin(seed) * 10000;
-            return x - Math.floor(x);
-        }
-
-        function updateDuration(value) {
-            selectedDuration = parseFloat(value);
-            const displayText = selectedDuration < 1 ?
-                `${Math.round(selectedDuration * 60)} seconds` :
-                `${selectedDuration} minute${selectedDuration > 1 ? 's' : ''}`;
-            document.getElementById('durationDisplay').textContent = displayText;
-        }
-
-        function selectAudience(audience, element) {
-            document.querySelectorAll('.audience-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-
-            element.classList.add('selected');
-            selectedAudience = audience;
-        }
-
-        function generateScript() {
-            const topic = document.getElementById('topic').value.trim();
-
-            if (!topic) {
-                alert('Please enter a topic!');
-                return;
+                // Country-specific financial tips
+                this.countryTips = {
+                    'Pakistan': {
+                        savings: 'Consider investing in National Savings Schemes or mutual funds for better returns',
+                        housing: 'Joint family living can reduce housing costs significantly',
+                        food: 'Buy from wholesale markets like Sabzi Mandi for cheaper groceries',
+                        education: 'Look for scholarship opportunities and government education schemes'
+                    },
+                    'India': {
+                        savings: 'Utilize PPF, ELSS, and SIP investments for tax benefits',
+                        housing: 'Consider tier-2 cities for affordable housing options',
+                        food: 'Cook at home and buy from local markets to save 40-50%',
+                        education: 'Online courses are much cheaper than traditional education'
+                    },
+                    'United States': {
+                        savings: 'Maximize 401k matching and consider Roth IRA',
+                        housing: 'Consider house hacking or finding roommates',
+                        food: 'Use coupons and shop at discount stores like Aldi',
+                        education: 'Community college for first 2 years can save thousands'
+                    }
+                };
             }
 
-            if (!selectedAudience) {
-                alert('Please select a target audience!');
-                return;
+            analyzeSpending(income, expenses, country) {
+                const totalExpenses = Object.values(expenses).reduce((sum, exp) => sum + exp, 0);
+                const ratios = {};
+
+                Object.keys(expenses).forEach(key => {
+                    ratios[key] = expenses[key] / income;
+                });
+
+                const totalExpenseRatio = totalExpenses / income;
+                const savingsRatio = Math.max(0, (income - totalExpenses) / income);
+
+                return {
+                    ratios,
+                    totalExpenseRatio,
+                    savingsRatio,
+                    overspending: this.detectOverspending(ratios, country),
+                    riskLevel: this.calculateRiskLevel(totalExpenseRatio, savingsRatio),
+                    countrySpecific: this.getCountrySpecificAdvice(country, ratios, income)
+                };
             }
 
-            showLoading(true);
+            detectOverspending(ratios, country) {
+                const issues = [];
 
-            // Simulate real-time generation with progressive updates
-            let progress = 0;
-            const progressInterval = setInterval(() => {
-                progress += Math.random() * 15;
-                if (progress > 90) progress = 90;
-                document.getElementById('progressFill').style.width = progress + '%';
-            }, 100);
-
-            setTimeout(() => {
-                clearInterval(progressInterval);
-                document.getElementById('progressFill').style.width = '100%';
-
-                const script = generateUniqueScript(topic, selectedAudience, selectedDuration);
-                displayScript(script);
-                showLoading(false);
-            }, 2000 + Math.random() * 1000);
-        }
-
-        function generateUniqueScript(topic, audience, duration) {
-            const seed = generateUniqueSeed();
-            const database = contentDatabase[audience];
-            const targetWords = Math.round(duration * 150); // Approximately 150 words per minute
-
-            let script = '';
-            let wordCount = 0;
-
-            // Generate opening (20-25% of content)
-            const opening = getRandomElement(database.openings, seed * 1.1) + ' ' + topic + '.';
-            script += opening + '\n\n';
-            wordCount += countWords(opening);
-
-            // Add main content sections based on audience type
-            if (audience === 'kids') {
-                // For kids: simple explanations and examples
-                const connector = getRandomElement(database.connectors, seed * 1.3);
-                const explanation = getRandomElement(database.explanations, seed * 1.5);
-                const example = getRandomElement(database.examples, seed * 1.7);
-
-                script += connector + ' ' + topic.toLowerCase() + '.\n\n';
-                script += explanation + ' ' + topic.toLowerCase() + ' works in amazing ways!\n\n';
-                script += example + ' helps us understand ' + topic.toLowerCase() + ' better.\n\n';
-
-                wordCount += countWords(connector) + countWords(explanation) + countWords(example) + 15;
-
-            } else if (audience === 'students') {
-                // For students: analytical and research-based content
-                const analysis = getRandomElement(database.analyses, seed * 1.4);
-                const research = getRandomElement(database.research, seed * 1.6);
-                const application = getRandomElement(database.applications, seed * 1.8);
-
-                script += topic + ' ' + analysis + '.\n\n';
-                script += research + ' ' + topic.toLowerCase() + ' continues to evolve rapidly.\n\n';
-                script += application + ' innovative solutions in ' + topic.toLowerCase() + '.\n\n';
-
-                wordCount += countWords(analysis) + countWords(research) + countWords(application) + 20;
-
-            } else if (audience === 'business') {
-                // For business: strategic and ROI-focused content
-                const valueProp = getRandomElement(database.value_props, seed * 1.2);
-                const implementation = getRandomElement(database.implementation, seed * 1.9);
-                const results = getRandomElement(database.results, seed * 2.1);
-
-                script += topic + ' ' + valueProp + '.\n\n';
-                script += implementation + ' strategic excellence in ' + topic.toLowerCase() + '.\n\n';
-                script += results + ' sustainable competitive advantages through ' + topic.toLowerCase() + '.\n\n';
-
-                wordCount += countWords(valueProp) + countWords(implementation) + countWords(results) + 25;
-            }
-
-            // Add additional content if needed to reach target duration
-            while (wordCount < targetWords * 0.85) {
-                if (audience === 'kids') {
-                    const development = getRandomElement(database.developments, seed * (2.5 + Math.random()));
-                    const additionalContent = development + ' ' + topic.toLowerCase() + '!';
-                    script += additionalContent + '\n\n';
-                    wordCount += countWords(additionalContent);
-                } else if (audience === 'students') {
-                    const implication = getRandomElement(database.implications, seed * (2.7 + Math.random()));
-                    const additionalContent = implication + ' in the field of ' + topic.toLowerCase() + '.';
-                    script += additionalContent + '\n\n';
-                    wordCount += countWords(additionalContent);
-                } else {
-                    const competitive = getRandomElement(database.competitive, seed * (2.9 + Math.random()));
-                    const additionalContent = competitive + ' ' + topic.toLowerCase() + '.';
-                    script += additionalContent + '\n\n';
-                    wordCount += countWords(additionalContent);
+                if (ratios.rent > this.idealRatios.housing) {
+                    const overspend = ((ratios.rent - this.idealRatios.housing) * 100).toFixed(1);
+                    issues.push({
+                        category: 'Housing',
+                        severity: 'high',
+                        overspend: overspend,
+                        message: `Housing costs are ${overspend}% above recommended 30% of income. ${this.getCountryTip(country, 'housing')}`,
+                        icon: 'fas fa-home'
+                    });
                 }
+
+                if (ratios.food > this.idealRatios.food) {
+                    const overspend = ((ratios.food - this.idealRatios.food) * 100).toFixed(1);
+                    issues.push({
+                        category: 'Food',
+                        severity: 'medium',
+                        overspend: overspend,
+                        message: `Food expenses are ${overspend}% above recommended 15%. ${this.getCountryTip(country, 'food')}`,
+                        icon: 'fas fa-utensils'
+                    });
+                }
+
+                if (ratios.entertainment > this.idealRatios.entertainment) {
+                    const overspend = ((ratios.entertainment - this.idealRatios.entertainment) * 100).toFixed(1);
+                    issues.push({
+                        category: 'Entertainment',
+                        severity: 'low',
+                        overspend: overspend,
+                        message: `Entertainment spending is ${overspend}% above recommended 10%. Find free local activities or group discounts.`,
+                        icon: 'fas fa-gamepad'
+                    });
+                }
+
+                if (ratios.education > this.idealRatios.education) {
+                    const overspend = ((ratios.education - this.idealRatios.education) * 100).toFixed(1);
+                    issues.push({
+                        category: 'Education',
+                        severity: 'medium',
+                        overspend: overspend,
+                        message: `Education costs are ${overspend}% above recommended 8%. ${this.getCountryTip(country, 'education')}`,
+                        icon: 'fas fa-graduation-cap'
+                    });
+                }
+
+                return issues;
             }
 
-            // Add conclusion (15-20% of content)
-            const conclusion = getRandomElement(database.conclusions, seed * 3.1);
-            script += conclusion;
-            wordCount += countWords(conclusion);
-
-            return {
-                text: script.trim(),
-                wordCount: wordCount,
-                estimatedDuration: Math.round((wordCount / 150) * 60) / 60
-            };
-        }
-
-        function getRandomElement(array, seed) {
-            const index = Math.floor(seededRandom(seed) * array.length);
-            return array[index];
-        }
-
-        function countWords(text) {
-            return text.trim().split(/\s+/).length;
-        }
-
-        function displayScript(scriptData) {
-            const outputDiv = document.getElementById('scriptOutput');
-            const scriptText = document.getElementById('generatedScript');
-            const wordCountSpan = document.getElementById('wordCount');
-            const charCountSpan = document.getElementById('charCount');
-            const durationSpan = document.getElementById('estimatedDuration');
-            const accuracyBadge = document.getElementById('accuracyBadge');
-
-            scriptText.textContent = scriptData.text;
-            wordCountSpan.textContent = `${scriptData.wordCount} words`;
-            charCountSpan.textContent = `${scriptData.text.length} characters`;
-
-            const actualMinutes = scriptData.estimatedDuration;
-            const targetMinutes = selectedDuration;
-            const accuracy = Math.abs(actualMinutes - targetMinutes);
-
-            if (actualMinutes < 1) {
-                durationSpan.textContent = `~${Math.round(actualMinutes * 60)} seconds`;
-            } else {
-                durationSpan.textContent = `~${actualMinutes.toFixed(1)} minutes`;
+            getCountryTip(country, category) {
+                if (this.countryTips[country] && this.countryTips[country][category]) {
+                    return this.countryTips[country][category];
+                }
+                return this.getGenericTip(category);
             }
 
-            // Update accuracy badge
-            if (accuracy <= 0.1) {
-                accuracyBadge.textContent = 'Perfect Match!';
-                accuracyBadge.className = 'duration-accuracy';
-                accuracyBadge.style.background = '#28a745';
-            } else if (accuracy <= 0.3) {
-                accuracyBadge.textContent = 'Very Close!';
-                accuracyBadge.className = 'duration-accuracy';
-                accuracyBadge.style.background = '#17a2b8';
-            } else {
-                accuracyBadge.textContent = 'Good Match';
-                accuracyBadge.className = 'duration-accuracy';
-                accuracyBadge.style.background = '#6f42c1';
-            }
-
-            outputDiv.style.display = 'block';
-            outputDiv.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function showLoading(show) {
-            const btnText = document.getElementById('btnText');
-            const loading = document.getElementById('loading');
-            const button = document.querySelector('.btn-generate');
-
-            if (show) {
-                btnText.style.display = 'none';
-                loading.style.display = 'inline';
-                button.disabled = true;
-            } else {
-                btnText.style.display = 'inline';
-                loading.style.display = 'none';
-                button.disabled = false;
-                document.getElementById('progressFill').style.width = '0%';
-            }
-        }
-
-        function copyToClipboard() {
-            const scriptText = document.getElementById('generatedScript').textContent;
-            navigator.clipboard.writeText(scriptText).then(() => {
-                const btn = document.querySelector('.copy-btn');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                btn.classList.add('copy-success');
-
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.classList.remove('copy-success');
-                }, 2000);
-            }).catch(() => {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = scriptText;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-
-                const btn = document.querySelector('.copy-btn');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                btn.classList.add('copy-success');
-
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.classList.remove('copy-success');
-                }, 2000);
-            });
-        }
-
-        function toggleSpeech() {
-            const btn = document.getElementById('listenBtn');
-
-            if (isPlaying) {
-                speechSynthesis.cancel();
-                btn.innerHTML = '<i class="fas fa-play"></i> Listen';
-                btn.classList.remove('playing');
-                isPlaying = false;
-            } else {
-                const text = document.getElementById('generatedScript').textContent;
-                currentUtterance = new SpeechSynthesisUtterance(text);
-
-                // Configure speech settings
-                currentUtterance.rate = 0.9;
-                currentUtterance.pitch = 1;
-                currentUtterance.volume = 1;
-
-                currentUtterance.onstart = () => {
-                    btn.innerHTML = '<i class="fas fa-stop"></i> Stop';
-                    btn.classList.add('playing');
-                    isPlaying = true;
+            getGenericTip(category) {
+                const genericTips = {
+                    housing: 'Consider sharing accommodation or moving to a less expensive area',
+                    food: 'Plan meals, buy in bulk, and cook at home more often',
+                    entertainment: 'Look for free events, use student discounts, or find group deals',
+                    education: 'Explore online courses, scholarships, and used textbooks'
                 };
+                return genericTips[category] || 'Consider reducing expenses in this category';
+            }
 
-                currentUtterance.onend = () => {
-                    btn.innerHTML = '<i class="fas fa-play"></i> Listen';
-                    btn.classList.remove('playing');
-                    isPlaying = false;
+            calculateRiskLevel(expenseRatio, savingsRatio) {
+                if (expenseRatio >= 0.95) return 'critical';
+                if (expenseRatio >= 0.85) return 'high';
+                if (expenseRatio >= 0.75) return 'medium';
+                return 'low';
+            }
+
+            getCountrySpecificAdvice(country, ratios, income) {
+                const advice = [];
+
+                if (this.countryTips[country]) {
+                    if (ratios.savings < 0.20) {
+                        advice.push({
+                            type: 'savings',
+                            message: this.countryTips[country].savings,
+                            priority: 'high'
+                        });
+                    }
+                }
+
+                // Income-based advice
+                if (income < 2000) {
+                    advice.push({
+                        type: 'income',
+                        message: 'Consider freelancing, part-time work, or skill development to increase income',
+                        priority: 'high'
+                    });
+                } else if (income > 5000) {
+                    advice.push({
+                        type: 'investment',
+                        message: 'With higher income, consider diversifying into investments and retirement planning',
+                        priority: 'medium'
+                    });
+                }
+
+                return advice;
+            }
+
+            generateBudgetAnalysis(income, expenses, country) {
+                const analysis = this.analyzeSpending(income, expenses, country);
+                const totalExpenses = Object.values(expenses).reduce((sum, exp) => sum + exp, 0);
+                const savings = income - totalExpenses;
+                const savingsPercentage = (savings / income * 100).toFixed(1);
+
+                let message = `Based on your ${currencyFlag} ${currencySymbol}${income.toLocaleString()} monthly income from ${country}, `;
+
+                if (analysis.riskLevel === 'critical') {
+                    message += `🚨 CRITICAL: You're spending ${(analysis.totalExpenseRatio * 100).toFixed(1)}% of your income! This is unsustainable and requires immediate action.`;
+                } else if (analysis.riskLevel === 'high') {
+                    message += `⚠️ HIGH RISK: You're spending ${(analysis.totalExpenseRatio * 100).toFixed(1)}% of your income. You need to cut expenses urgently.`;
+                } else if (analysis.riskLevel === 'medium') {
+                    message += `⚡ MODERATE RISK: You're spending ${(analysis.totalExpenseRatio * 100).toFixed(1)}% of your income. There's room for improvement.`;
+                } else {
+                    message += `✅ GOOD FINANCIAL HEALTH: You're spending ${(analysis.totalExpenseRatio * 100).toFixed(1)}% of your income and saving ${savingsPercentage}%!`;
+                }
+
+                if (savings > 0) {
+                    message += ` You can save ${currencySymbol}${savings.toLocaleString()} (${savingsPercentage}%) monthly.`;
+                } else {
+                    message += ` You're overspending by ${currencySymbol}${Math.abs(savings).toLocaleString()}!`;
+                }
+
+                return {
+                    message,
+                    analysis,
+                    recommendations: this.generateRecommendations(analysis, income, expenses, country)
                 };
+            }
 
-                currentUtterance.onerror = () => {
-                    btn.innerHTML = '<i class="fas fa-play"></i> Listen';
-                    btn.classList.remove('playing');
-                    isPlaying = false;
-                };
+            generateRecommendations(analysis, income, expenses, country) {
+                const recommendations = [];
 
-                speechSynthesis.speak(currentUtterance);
+                // Priority recommendations based on overspending
+                if (analysis.overspending.length > 0) {
+                    analysis.overspending.forEach(issue => {
+                        recommendations.push({
+                            category: issue.category,
+                            severity: issue.severity,
+                            message: issue.message,
+                            icon: issue.icon,
+                            savings: (income * parseFloat(issue.overspend) / 100).toFixed(0)
+                        });
+                    });
+                }
+
+                // General recommendations
+                if (analysis.savingsRatio < 0.20) {
+                    recommendations.push({
+                        category: 'Emergency Fund',
+                        severity: 'high',
+                        message: 'Build an emergency fund of 3-6 months expenses. Start with just $50/month.',
+                        icon: 'fas fa-shield-alt',
+                        savings: Math.max(50, income * 0.1).toFixed(0)
+                    });
+                }
+
+                // Country-specific recommendations
+                if (analysis.countrySpecific.length > 0) {
+                    analysis.countrySpecific.forEach(advice => {
+                        recommendations.push({
+                            category: advice.type,
+                            severity: advice.priority,
+                            message: advice.message,
+                            icon: 'fas fa-globe',
+                            savings: '0'
+                        });
+                    });
+                }
+
+                // Income optimization recommendations
+                if (income < 3000) {
+                    recommendations.push({
+                        category: 'Income Growth',
+                        severity: 'medium',
+                        message: 'Consider developing high-demand skills like coding, digital marketing, or data analysis for better income.',
+                        icon: 'fas fa-chart-line',
+                        savings: '0'
+                    });
+                }
+
+                return recommendations.slice(0, 6); // Limit to top 6 recommendations
             }
         }
 
-        function downloadScript() {
-            const scriptText = document.getElementById('generatedScript').textContent;
-            const topic = document.getElementById('topic').value || 'script';
-            const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+        // Initialize AI Analyzer
+        const aiAnalyzer = new AIBudgetAnalyzer();
 
-            const content = `AI Voiceover Script
-Generated: ${new Date().toLocaleString()}
-Topic: ${topic}
-Audience: ${selectedAudience}
-Duration: ${selectedDuration} minute${selectedDuration > 1 ? 's' : ''}
+        // Currency change handler
+        document.getElementById('currency').addEventListener('change', function () {
+            const selectedOption = this.options[this.selectedIndex];
+            if (selectedOption.value) {
+                selectedCurrency = selectedOption.value;
+                currencySymbol = selectedOption.dataset.symbol;
+                currencyFlag = selectedOption.dataset.flag;
+                countryName = selectedOption.dataset.country;
 
----
-
-${scriptText}`;
-
-            const blob = new Blob([content], { type: 'text/plain' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `voiceover-script-${topic.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-${timestamp}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-        }
-
-        // Initialize default audience selection
-        document.addEventListener('DOMContentLoaded', function () {
-            // Auto-select students as default
-            const defaultCard = document.querySelector('.audience-card:nth-child(2)');
-            if (defaultCard) {
-                selectAudience('students', defaultCard);
+                // Update all currency symbols
+                document.querySelectorAll('[id$="Symbol"]').forEach(el => {
+                    el.textContent = currencySymbol;
+                });
             }
         });
 
-        // Enter key support for topic input
-        document.getElementById('topic').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                generateScript();
+        // Form submission handler
+        document.getElementById('budgetForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const spinner = submitBtn.querySelector('.loading-spinner');
+
+            // Show loading state
+            spinner.style.display = 'inline-block';
+            submitBtn.disabled = true;
+
+            // Get form data
+            const formData = {
+                income: parseFloat(document.getElementById('income').value),
+                rent: parseFloat(document.getElementById('rent').value),
+                food: parseFloat(document.getElementById('food').value),
+                entertainment: parseFloat(document.getElementById('entertainment').value),
+                education: parseFloat(document.getElementById('education').value),
+                other: parseFloat(document.getElementById('other').value)
+            };
+
+            // Simulate AI processing delay
+            setTimeout(() => {
+                generateBudgetAnalysis(formData);
+
+                // Hide loading state
+                spinner.style.display = 'none';
+                submitBtn.disabled = false;
+
+                // Show results
+                document.getElementById('resultsSection').style.display = 'block';
+                document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+            }, 2000);
+        });
+
+        function generateBudgetAnalysis(data) {
+            const expenses = {
+                rent: data.rent,
+                food: data.food,
+                entertainment: data.entertainment,
+                education: data.education,
+                other: data.other
+            };
+
+            const totalExpenses = Object.values(expenses).reduce((sum, exp) => sum + exp, 0);
+            const savings = data.income - totalExpenses;
+
+            // Update statistics
+            document.getElementById('totalIncome').textContent = `${currencySymbol}${data.income.toLocaleString()}`;
+            document.getElementById('totalExpenses').textContent = `${currencySymbol}${totalExpenses.toLocaleString()}`;
+            document.getElementById('totalSavings').textContent = `${currencySymbol}${savings.toLocaleString()}`;
+
+            // Generate AI analysis
+            const aiResult = aiAnalyzer.generateBudgetAnalysis(data.income, expenses, countryName);
+            document.getElementById('budgetAnalysis').innerHTML = aiResult.message;
+
+            // Create chart
+            createBudgetChart(expenses, savings);
+
+            // Generate saving tips
+            generateSavingTips(aiResult.recommendations);
+        }
+
+        function createBudgetChart(expenses, savings) {
+            const ctx = document.getElementById('budgetChart').getContext('2d');
+
+            if (budgetChart) {
+                budgetChart.destroy();
             }
+
+            const chartData = [];
+            const chartLabels = [];
+            const chartColors = [];
+
+            // Add expenses
+            Object.entries(expenses).forEach(([key, value]) => {
+                if (value > 0) {
+                    chartData.push(value);
+                    chartLabels.push(key.charAt(0).toUpperCase() + key.slice(1));
+
+                    const colors = {
+                        rent: '#FF6384',
+                        food: '#36A2EB',
+                        entertainment: '#FFCE56',
+                        education: '#4BC0C0',
+                        other: '#9966FF'
+                    };
+                    chartColors.push(colors[key] || '#FF9F40');
+                }
+            });
+
+            // Add savings if positive
+            if (savings > 0) {
+                chartData.push(savings);
+                chartLabels.push('Savings');
+                chartColors.push('#4CAF50');
+            }
+
+            budgetChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        data: chartData,
+                        backgroundColor: chartColors,
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return `${label}: ${currencySymbol}${value.toLocaleString()} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function generateSavingTips(recommendations) {
+            const tipsContainer = document.getElementById('savingTips');
+
+            if (recommendations.length === 0) {
+                tipsContainer.innerHTML = `
+                    <div class="advice-card success card p-3">
+                        <h6><i class="fas fa-check-circle me-2"></i>Excellent Budget Management!</h6>
+                        <p class="mb-0">Your spending is well-balanced. Keep up the good work and consider investing your savings for long-term growth.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let tipsHTML = '';
+            recommendations.forEach((tip, index) => {
+                const severityClass = tip.severity === 'high' ? 'danger' :
+                    tip.severity === 'medium' ? 'warning' : 'success';
+
+                const savingsText = tip.savings && tip.savings !== '0' ?
+                    `<small class="text-muted"><i class="fas fa-piggy-bank me-1"></i>Potential monthly savings: ${currencySymbol}${tip.savings}</small>` : '';
+
+                tipsHTML += `
+                    <div class="advice-card ${severityClass} card p-3 mb-3">
+                        <h6><i class="${tip.icon} me-2"></i>${tip.category}</h6>
+                        <p class="mb-1">${tip.message}</p>
+                        ${savingsText}
+                    </div>
+                `;
+            });
+
+            tipsContainer.innerHTML = tipsHTML;
+        }
+
+        // Initialize form with default currency
+        document.addEventListener('DOMContentLoaded', function () {
+            // Set default currency symbols
+            document.querySelectorAll('[id$="Symbol"]').forEach(el => {
+                el.textContent = currencySymbol;
+            });
         });
     </script>
 </body>
